@@ -1,0 +1,4 @@
+mapit-requests
+*.csv
+*.xlsx
+*.pyc
