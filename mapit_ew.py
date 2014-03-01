@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+# Adapted from https://github.com/mikejamesthompson/mapit-requests
+
 from datetime import datetime, time
 import sys
 
@@ -41,12 +43,14 @@ def getData(postcode):
         data = {}
     
         constituency_id = response['shortcuts']['WMC']
-        data['constituency'] = response['areas'][str(constituency_id)]['name'].encode('utf-8')
+        data['constituency_id'] = constituency_id
+        data['constituency_name'] = response['areas'][str(constituency_id)]['name'].encode('utf-8')
     
         ward_id = response['shortcuts']['ward']
         if type(ward_id) is not int:
             ward_id = ward_id['district']
-        data['ward'] = response['areas'][str(ward_id)]['name'].encode('utf-8')
+        data['ward_id'] = ward_id
+        data['ward_name'] = response['areas'][str(ward_id)]['name'].encode('utf-8')
 
         for area in response['areas']:
             areaType = response['areas'][area]['type']
@@ -62,6 +66,3 @@ def getData(postcode):
     
 if __name__ == "main":
     print getData(sys.argv[1])
-
-
-

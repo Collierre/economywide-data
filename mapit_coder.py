@@ -6,7 +6,6 @@ import csv
 import pprint
 import pygeocoder
 import mapit_ew
-#from pygeocoder import Geocoder
 from pygeolib import GeocoderError, GeocoderResult
 
 parser = argparse.ArgumentParser()
@@ -33,8 +32,10 @@ with open(args.inputfile, 'rb') as csvfile:
             fields_row = []
             for field in fields[0:8]:
                 fields_row.append(field)
-            fields_row.append('Constituency')
-            fields_row.append('Ward')
+            fields_row.append('Constituency ID')
+            fields_row.append('Constituency Name')
+            fields_row.append('Ward ID')
+            fields_row.append('Ward Name')
             fields_row.append('Output area')
             writer.writerow(fields_row)
             
@@ -46,6 +47,7 @@ with open(args.inputfile, 'rb') as csvfile:
         for row in reader:
             postcode = row[4]
             print "Postcode:\n" + postcode
+            data = {}
             try:
                 data = mapit_ew.getData(postcode)
                 print data
@@ -55,9 +57,10 @@ with open(args.inputfile, 'rb') as csvfile:
             new_row = []
             for field in row[0:8]:
                 new_row.append(field)
-            new_row.append(data['constituency']) if 'constituency' in data else new_row.append('')
-            new_row.append(data['ward']) if 'ward' in data else new_row.append('')
+            new_row.append(data['constituency_id']) if 'constituency_id' in data else new_row.append('')
+            new_row.append(data['constituency_name']) if 'constituency_name' in data else new_row.append('')
+            new_row.append(data['ward_id']) if 'ward_id' in data else new_row.append('')
+            new_row.append(data['ward_name']) if 'ward_name' in data else new_row.append('')
             new_row.append(data['olf']) if 'olf' in data else new_row.append('')
                 
             writer.writerow(new_row)
-            #sleep(1.5)
